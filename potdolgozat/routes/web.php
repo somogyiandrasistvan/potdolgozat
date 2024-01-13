@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\lessonsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +18,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('api/lessons', [lessonsController::class, 'index']);
-Route::get('api/lessons/{id}', [lessonsController::class, 'show']);
-Route::post('api/lessons', [lessonsController::class, 'store']);
-Route::put('api/lessons/{id}', [lessonsController::class, 'update']);
-Route::delete('api/lessons/{id}', [lessonsController::class, 'destroy']);
-Route::get('api/users', [lessonsController::class, 'index']);
-Route::get('lessons/new', [lessonsController::class, 'newView']);
-Route::get('lessons/edit/{id}', [lessonsController::class, 'editView']);
-Route::get('lessons/list', [lessonsController::class, 'listView']);
+Route::get("/ptype/", [lessonsController::class, "listView"]);
+Route::get("/ptype/edit/{id}", [lessonsController::class, "editView"]);
+Route::get("/ptype/new/", [lessonsController::class, "newView"]);
+Route::get("/ptype/del/", [lessonsController::class, "delView"]);
+
+Route::get("/api/ptype/", [lessonsController::class, "list"]);
+Route::put("/api/ptype/{id}", [lessonsController::class, "edit"]);
+Route::post("/api/ptype/", [lessonsController::class, "new"]);
+Route::delete("/api/ptype/{id}", [lessonsController::class, "del"]);

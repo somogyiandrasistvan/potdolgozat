@@ -7,64 +7,49 @@ use Illuminate\Http\Request;
 
 class lessonsController extends Controller
 {
-    public function index()
-    {
-        $lessons = response()->json(lessons::all());
-        return $lessons;
+    function listView() {
+        return view("lessons.list", ["lessons" => lessons::all()]);
     }
 
-    public function show($id)
-    {
-        $lessons = response()->json(lessons::find($id));
-        return $lessons;
+    function editView($id) {
+        return view("lessons.edit", ["pType" => lessons::find($id)]);
     }
 
-    public function destroy($id)
-    {
+    function newView() {
+        return view("lessons.new");
+    }
+
+    function delView() {
+        return view("lessons.delete", ["lessons" => lessons::all()]);
+    }
+    
+    //API
+    function list() {
+        return response()->json(lessons::all());
+    }
+
+    function edit(Request $request, $id) {
+        $pType = lessons::find($id);
+        $pType->lesson_id = $request->lesson_id;
+        $pType->status = $request->status;
+        $pType->subject_id = $request->subject_id;
+        $pType->user_id = $request->user_id;
+        $pType->save();
+        return redirect("/ptype");
+    }
+    
+    function new(Request $request) {
+        $pType = new lessons();
+        $pType->lesson_id = $request->lesson_id;
+        $pType->status = $request->status;
+        $pType->subject_id = $request->subject_id;
+        $pType->user_id = $request->user_id;
+        $pType->save();
+        return redirect("/ptype");
+    }
+
+    function del($id) {
         lessons::find($id)->delete();
-        return redirect('/lessons/list');
-    }
-
-    public function store(Request $request)
-    {
-        $lessons = new lessons();
-        $lessons->title = $request->title;
-        $lessons->description = $request->description;
-        $lessons->end_date = $request->end_date;
-        $lessons->user_id = $request->user_id;
-        $lessons->status = $request->status;
-        $lessons->save();
-        return redirect('/lessons/list');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $lessons = lessons::find($id);
-        $lessons->title = $request->title;
-        $lessons->description = $request->description;
-        $lessons->end_date = $request->end_date;
-        $lessons->user_id = $request->user_id;
-        $lessons->status = $request->status;
-        $lessons->save();
-        return redirect('/lessons/list');
-    }
-
-    public function listView()
-    {
-        $lessons = lessons::all();
-        return view('lessons.list', ['lessons' => $lessons]);
-    }
-
-    public function newView()
-    {
-        $users = lessons::all();
-        return view('lessons.new', ['users' => $users]);
-    }
-
-    public function editView($id)
-    {
-        $users = lessons::all();
-        $lessons = lessons::find($id);
-        return view('lessons.edit', ['users' => $users, 'lessons' => $lessons]);
+        return redirect("/ptype");
     }
 }

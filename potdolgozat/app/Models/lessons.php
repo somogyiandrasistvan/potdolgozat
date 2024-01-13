@@ -16,4 +16,13 @@ class lessons extends Model
         'subject_id',
         'user_id'
     ];
+
+    public function user() {
+        return $this->hasMany(User::class);
+    }
+
+    
+    public function subjects() {
+        return $this->belongsTo(subjects::class);
+    }
 }

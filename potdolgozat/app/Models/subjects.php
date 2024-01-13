@@ -16,4 +16,8 @@ class subjects extends Model
         'description',
         'limit'
     ];
+
+    public function subjects() {
+        return $this->hasMany(subjects::class);
+    }
 }
